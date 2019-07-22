@@ -1,8 +1,8 @@
 package info.unclewang.serialization;
 
 /**
- * @Author unclewang
- * @Date 2019-07-22 17:35
+ * @author unclewang
+ * @date 2019-07-22 17:35
  */
 public interface XinSerializable {
 

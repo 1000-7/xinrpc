@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import info.unclewang.serialization.XinSerializable;
 
 /**
- * @Author unclewang
- * @Date 2019-07-22 17:36
+ * @author unclewang
+ * @date 2019-07-22 17:36
  */
 public class FastJsonSerialization implements XinSerializable {
 	/**
