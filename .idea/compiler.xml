@@ -8,7 +8,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="xinrpc" />
+        <module name="consumer" />
+        <module name="common" />
+        <module name="protocol" />
+        <module name="provider" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8" />

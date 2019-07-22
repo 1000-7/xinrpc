@@ -6,7 +6,21 @@
 
     <groupId>info.unclewang</groupId>
     <artifactId>xinrpc</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>provider</module>
+        <module>consumer</module>
+        <module>common</module>
+        <module>protocol</module>
+    </modules>
 
 
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.6</version>
+        </dependency>
+    </dependencies>
 </project>
