@@ -20,7 +20,7 @@
         <dependency>
             <groupId>info.unclewang</groupId>
             <artifactId>protocol</artifactId>
-            <version>${project.version}</version>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

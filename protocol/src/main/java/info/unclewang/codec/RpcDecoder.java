@@ -11,11 +11,11 @@ import java.util.List;
  * @author xavior.wx
  * @date 2019-07-22 17:52
  */
-public class RpcDecoder<T> extends ByteToMessageDecoder {
-	private Class<T> clz;
+public class RpcDecoder extends ByteToMessageDecoder {
+	private Class<?> clz;
 	private XinSerializable xinSerializable;
 
-	public RpcDecoder(Class<T> clz, XinSerializable xinSerializable) {
+	public RpcDecoder(Class<?> clz, XinSerializable xinSerializable) {
 		this.clz = clz;
 		this.xinSerializable = xinSerializable;
 	}
@@ -41,7 +41,7 @@ public class RpcDecoder<T> extends ByteToMessageDecoder {
 		byte[] data = new byte[dataLength];
 		byteBuf.readBytes(data);
 
-		T obj = xinSerializable.deSerialize(data, clz);
+		Object obj = xinSerializable.deSerialize(data, clz);
 		list.add(obj);
 	}
 }

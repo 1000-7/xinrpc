@@ -27,7 +27,7 @@ public class RpcConfig implements ApplicationContextAware, InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		Reflections reflections = new Reflections("info.unclewang");
+		Reflections reflections = new Reflections("info.unclewang.api");
 		DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
 		Set<Class<?>> typesAnnotatedWith = reflections.getTypesAnnotatedWith(RpcInterface.class);
 		for (Class<?> oneClass : typesAnnotatedWith) {

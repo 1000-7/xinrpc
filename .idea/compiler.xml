@@ -9,10 +9,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="protocol" />
-        <module name="test-api" />
         <module name="common" />
         <module name="provider" />
         <module name="test-consumer" />
+        <module name="test-common" />
         <module name="test-provider" />
         <module name="consumer" />
       </profile>
@@ -25,9 +25,10 @@
       <module name="consumer" options="-parameters" />
       <module name="protocol" options="-parameters" />
       <module name="provider" options="-parameters" />
-      <module name="test-api" options="-parameters" />
+      <module name="test-common" options="-parameters" />
       <module name="test-consumer" options="-parameters" />
       <module name="test-provider" options="-parameters" />
+      <module name="testapi" options="-parameters" />
     </option>
   </component>
 </project>

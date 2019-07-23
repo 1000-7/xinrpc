@@ -50,8 +50,8 @@ public class NettyServer {
 					@Override
 					protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
 						nioSocketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(65535, 0, 4));
-						nioSocketChannel.pipeline().addLast(new RpcEncoder<>(RpcResponse.class, new FastJsonSerialization()));
-						nioSocketChannel.pipeline().addLast(new RpcDecoder<>(RpcRequest.class, new FastJsonSerialization()));
+						nioSocketChannel.pipeline().addLast(new RpcEncoder(RpcResponse.class, new FastJsonSerialization()));
+						nioSocketChannel.pipeline().addLast(new RpcDecoder(RpcRequest.class, new FastJsonSerialization()));
 						nioSocketChannel.pipeline().addLast(rpcHandler);
 					}
 				});

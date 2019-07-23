@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>test-api</artifactId>
+    <artifactId>test-common</artifactId>
     <dependencies>
         <dependency>
             <groupId>info.unclewang</groupId>

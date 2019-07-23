@@ -9,17 +9,17 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * @author unclewang
  * @date 2019-07-22 17:54
  */
-public class RpcEncoder<T> extends MessageToByteEncoder<T> {
-	private Class<T> clz;
+public class RpcEncoder extends MessageToByteEncoder {
+	private Class<?> clz;
 	private XinSerializable xinSerializable;
 
-	public RpcEncoder(Class<T> clz, XinSerializable xinSerializable) {
+	public RpcEncoder(Class<?> clz, XinSerializable xinSerializable) {
 		this.clz = clz;
 		this.xinSerializable = xinSerializable;
 	}
 
 	@Override
-	protected void encode(ChannelHandlerContext channelHandlerContext, T o, ByteBuf byteBuf) throws Exception {
+	protected void encode(ChannelHandlerContext channelHandlerContext, Object o, ByteBuf byteBuf) throws Exception {
 		if (clz != null) {
 			byte[] bytes = xinSerializable.serialize(o);
 			byteBuf.writeInt(bytes.length);

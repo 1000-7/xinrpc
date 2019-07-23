@@ -38,7 +38,7 @@ public class RpcProxy<T> implements InvocationHandler {
 	}
 
 	private static RpcResponse send(RpcRequest request) {
-		NettyClient nettyClient = new NettyClient("127.0.0.1", 8080);
+		NettyClient nettyClient = new NettyClient("127.0.0.1", 8000);
 		nettyClient.connect(nettyClient.getInetSocketAddress());
 		return nettyClient.send(request);
 

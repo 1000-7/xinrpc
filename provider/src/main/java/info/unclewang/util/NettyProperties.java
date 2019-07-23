@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "netty")
 public class NettyProperties {
 
-	private int tcpPort = 8080;
+	private int tcpPort = 8000;
 
 	private int bossCount = 4;
 

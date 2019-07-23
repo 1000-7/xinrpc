@@ -13,20 +13,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <groupId>info.unclewang</groupId>
+            <artifactId>test-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>info.unclewang</groupId>
-            <artifactId>provider</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>info.unclewang</groupId>
-            <artifactId>test-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <artifactId>consumer</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
