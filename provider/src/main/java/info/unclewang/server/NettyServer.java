@@ -36,6 +36,7 @@ public class NettyServer {
 	@Autowired
 	private RpcHandler rpcHandler;
 
+	@Bean
 	public ServerBootstrap serverBootstrap() {
 		NioEventLoopGroup bossGroup = new NioEventLoopGroup();
 		NioEventLoopGroup workerGroup = new NioEventLoopGroup();

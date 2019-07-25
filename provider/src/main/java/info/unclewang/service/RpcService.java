@@ -1,6 +1,7 @@
 package info.unclewang.service;
 
 import info.unclewang.server.NettyServer;
+import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,12 @@ import javax.annotation.PreDestroy;
 public class RpcService {
 	@Autowired
 	private NettyServer nettyServer;
+	@Autowired
+	private ServerBootstrap serverBootstrap;
 	private Channel serverChannel;
 
 	public void start() throws InterruptedException {
-		serverChannel = nettyServer.bind(nettyServer.serverBootstrap());
+		serverChannel = nettyServer.bind(serverBootstrap);
 	}
 
 	@PreDestroy

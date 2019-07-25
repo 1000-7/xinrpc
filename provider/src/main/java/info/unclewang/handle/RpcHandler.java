@@ -2,6 +2,7 @@ package info.unclewang.handle;
 
 import info.unclewang.entity.RpcRequest;
 import info.unclewang.entity.RpcResponse;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import java.util.Date;
  */
 @Slf4j
 @Component
+@ChannelHandler.Sharable
 public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> implements ApplicationContextAware {
 	private ApplicationContext applicationContext;
 

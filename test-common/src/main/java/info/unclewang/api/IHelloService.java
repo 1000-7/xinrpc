@@ -3,7 +3,11 @@ package info.unclewang.api;
 
 import info.unclewang.annotation.RpcInterface;
 
+import java.util.Map;
+
 @RpcInterface
 public interface IHelloService {
-	Object sayHi(String name);
+	String sayHi(String name);
+
+	Map<String, String> map(String key, String value);
 }

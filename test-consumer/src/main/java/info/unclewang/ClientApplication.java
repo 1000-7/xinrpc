@@ -17,6 +17,7 @@ public class ClientApplication {
 
 		IHelloService helloService = context.getBean(IHelloService.class);
 		System.out.println(helloService.sayHi("world"));
+		System.out.println("helloService.map(\"aa\",\"bb\") = " + helloService.map("aa", "bb"));
 	}
 
 }

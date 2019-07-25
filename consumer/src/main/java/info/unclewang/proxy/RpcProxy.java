@@ -34,7 +34,7 @@ public class RpcProxy<T> implements InvocationHandler {
 		request.setMethodName(methodName);
 		request.setParameterTypes(parameterTypes);
 		request.setParameters(args);
-		return send(request);
+		return send(request).getResult();
 	}
 
 	private static RpcResponse send(RpcRequest request) {
