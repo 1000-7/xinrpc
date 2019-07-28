@@ -135,6 +135,4 @@ public class EtcdRegister implements Register {
 		}
 		return res;
 	}
-
-
 }
