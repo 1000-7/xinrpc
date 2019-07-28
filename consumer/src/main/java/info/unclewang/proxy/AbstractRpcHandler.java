@@ -5,7 +5,6 @@ import info.unclewang.entity.RpcRequest;
 import info.unclewang.etcd.EtcdRegister;
 import lombok.extern.slf4j.Slf4j;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.util.Date;
@@ -18,21 +17,15 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author unclewang
- * @date 2019-07-22 20:45
+ * @date 2019-07-28 18:53
  */
 @Slf4j
-public class RpcInvocationHandler<T> implements InvocationHandler {
-	private Class<T> clz;
-	private List<InetSocketAddress> discoverInetSocketAddress = null;
-	private EtcdRegister register;
+public abstract class AbstractRpcHandler<T> {
+	protected Class<T> clz;
+	protected List<InetSocketAddress> discoverInetSocketAddress = null;
+	protected EtcdRegister register;
 
-	public RpcInvocationHandler(Class<T> clz) {
-		this.clz = clz;
-		updateDiscoverInetSocketAddress();
-	}
-
-	@Override
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+	protected Object handleRequestAndSend(Method method, Object[] args) {
 		RpcRequest request = new RpcRequest();
 
 		String requestId = UUID.randomUUID().toString();
@@ -65,7 +58,10 @@ public class RpcInvocationHandler<T> implements InvocationHandler {
 		return nettyClient.send(request).getResult();
 	}
 
-	public void updateDiscoverInetSocketAddress() {
+	/**
+	 * 每个consumer都需要5s一次获取最新的内容，应该缓存起来，不应该在这做
+	 */
+	protected void updateDiscoverInetSocketAddress() {
 		log.info("updateDiscoverInetSocketAddress init");
 		ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(2, r -> {
 			Thread t = new Thread(r);
@@ -81,9 +77,6 @@ public class RpcInvocationHandler<T> implements InvocationHandler {
 			}
 			this.discoverInetSocketAddress = this.register.discover(this.clz.getName());
 			log.info("updateDiscoverInetSocketAddress success, {}", new Date(System.currentTimeMillis()).toString());
-		}, 0, 3 * 6, TimeUnit.SECONDS);
-
-
+		}, 0, 5, TimeUnit.SECONDS);
 	}
-
 }

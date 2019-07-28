@@ -1,7 +1,10 @@
 package info.unclewang.proxy;
 
 import info.unclewang.annotation.RpcConsumer;
+import info.unclewang.proxy.cglib.RpcMethodInterceptor;
+import info.unclewang.proxy.jdk.RpcInvocationHandler;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.cglib.proxy.Enhancer;
 import org.reflections.Reflections;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -34,7 +37,8 @@ public class RpcProxy implements ApplicationContextAware, InitializingBean {
 			if (annotation == null) {
 				continue;
 			}
-			beanFactory.registerSingleton(oneClass.getSimpleName(), create(Class.forName(annotation.call())));
+//			beanFactory.registerSingleton(oneClass.getSimpleName(), create(Class.forName(annotation.call())));
+			beanFactory.registerSingleton(oneClass.getSimpleName(), createByCglib(Class.forName(annotation.call())));
 		}
 		log.warn("afterPropertiesSet rpcConsumerAnnotations is {}", rpcConsumerAnnotations);
 	}
@@ -45,5 +49,12 @@ public class RpcProxy implements ApplicationContextAware, InitializingBean {
 				new Class<?>[]{interfaceClass},
 				new RpcInvocationHandler<>(interfaceClass)
 		);
+	}
+
+	public static <T> T createByCglib(Class<T> clazz) {
+		Enhancer enhancer = new Enhancer();
+		enhancer.setSuperclass(clazz);
+		enhancer.setCallback(new RpcMethodInterceptor(clazz));
+		return (T) enhancer.create();
 	}
 }
