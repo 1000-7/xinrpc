@@ -14,6 +14,7 @@ public class Application {
 	public static void main(String[] args) throws InterruptedException {
 		ConfigurableApplicationContext context = SpringApplication.run(Application.class);
 		RpcService service = context.getBean(RpcService.class);
+
 		service.start("127.0.0.1", Integer.parseInt(System.getProperty("port")));
 
 	}

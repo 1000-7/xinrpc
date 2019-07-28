@@ -1,7 +1,6 @@
-package info.unclewang.config;
+package info.unclewang.proxy;
 
-import info.unclewang.annotation.RpcInterface;
-import info.unclewang.proxy.RpcInvocationHandler;
+import info.unclewang.annotation.RpcConsumer;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import org.springframework.beans.BeansException;
@@ -9,12 +8,12 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Proxy;
 import java.util.Set;
 
-@Configuration
+@Component
 @Slf4j
 public class RpcProxy implements ApplicationContextAware, InitializingBean {
 
@@ -27,13 +26,17 @@ public class RpcProxy implements ApplicationContextAware, InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		Reflections reflections = new Reflections("info.unclewang.api");
+		Reflections reflections = new Reflections("info.unclewang");
 		DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
-		Set<Class<?>> typesAnnotatedWith = reflections.getTypesAnnotatedWith(RpcInterface.class);
-		for (Class<?> oneClass : typesAnnotatedWith) {
-			beanFactory.registerSingleton(oneClass.getSimpleName(), create(oneClass));
+		Set<Class<?>> rpcConsumerAnnotations = reflections.getTypesAnnotatedWith(RpcConsumer.class);
+		for (Class<?> oneClass : rpcConsumerAnnotations) {
+			RpcConsumer annotation = oneClass.getAnnotation(RpcConsumer.class);
+			if (annotation == null) {
+				continue;
+			}
+			beanFactory.registerSingleton(oneClass.getSimpleName(), create(Class.forName(annotation.call())));
 		}
-		log.info("afterPropertiesSet is {}", typesAnnotatedWith);
+		log.warn("afterPropertiesSet rpcConsumerAnnotations is {}", rpcConsumerAnnotations);
 	}
 
 	public static <T> T create(Class<T> interfaceClass) {

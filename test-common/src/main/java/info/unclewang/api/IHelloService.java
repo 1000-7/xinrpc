@@ -1,11 +1,11 @@
 package info.unclewang.api;
 
 
-import info.unclewang.annotation.RpcInterface;
+import info.unclewang.annotation.RpcProvider;
 
 import java.util.Map;
 
-@RpcInterface
+@RpcProvider(name = "info.unclewang.api.IHelloService")
 public interface IHelloService {
 	String sayHi(String name);
 

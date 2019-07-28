@@ -101,8 +101,8 @@ public class EtcdRegister implements Register {
 
 		try {
 			PutResponse putResponse = this.kvClient.put(byteKey, byteValue, PutOption.newBuilder().withLeaseId(this.leaseId).build()).get();
-			log.info("kv put success. key-value:{}", putResponse.getPrevKv().toString());
-			log.info("register success. address:{}", address.toString());
+			log.info("kv put success. key:value||{}:{}", key, value);
+			log.info("register success. address:{}, prevKV;{}", address.toString(), putResponse.getPrevKv());
 		} catch (InterruptedException | ExecutionException e) {
 			log.error("kv put failed", e);
 		}

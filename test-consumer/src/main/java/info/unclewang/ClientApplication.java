@@ -1,9 +1,8 @@
 package info.unclewang;
 
-import info.unclewang.api.IHelloService;
+import info.unclewang.service.ConsumerServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * @author unclewang
@@ -11,15 +10,9 @@ import org.springframework.context.ConfigurableApplicationContext;
  */
 @SpringBootApplication
 public class ClientApplication {
+
 	public static void main(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication.run(ClientApplication.class);
-		testXinRpc(context);
+		SpringApplication.run(ClientApplication.class);
+		ConsumerServiceImpl.testXinRpc();
 	}
-
-	public static void testXinRpc(ConfigurableApplicationContext context) {
-		IHelloService helloService = context.getBean(IHelloService.class);
-		System.out.println(helloService.sayHi("world"));
-		System.out.println("helloService.map(\"aa\",\"bb\") = " + helloService.map("aa", "bb"));
-	}
-
 }
