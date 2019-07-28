@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PreDestroy;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.Set;
 
 
@@ -32,6 +33,8 @@ public class RpcService {
 	private EtcdRegister etcdRegister;
 
 	private static Channel serverChannel = null;
+	private InetSocketAddress inetSocketAddress;
+	private String serviceName;
 
 	public void start(String ipAddress, int port) throws InterruptedException {
 		serverChannel = nettyServer.bind(serverBootstrap, port);
@@ -43,19 +46,25 @@ public class RpcService {
 			if (interfaces != null && interfaces.length > 0) {
 				//只获取实现的第一个interface的name，实际上并不准确，可能有误。
 				String clazzName = interfaces[0].getName();
+				this.serviceName = clazzName;
 				try {
-					etcdRegister.register(clazzName, new InetSocketAddress(RpcUtils.parseAddress(ipAddress), port));
+					log.info("register begin. service name :{}, address:{}:{}", serviceName, ipAddress, port);
+					this.inetSocketAddress = new InetSocketAddress(RpcUtils.parseAddress(ipAddress), port);
+					etcdRegister.register(clazzName, this.inetSocketAddress);
+
 				} catch (UnknownHostException e) {
 					log.error("UnknownHostException", e);
 				}
 			}
 
 		});
-
 	}
 
 	@PreDestroy
 	public void stop() {
+		etcdRegister.remove(this.serviceName, this.inetSocketAddress);
+		log.warn("service is closed.{}", new Date(System.currentTimeMillis()));
+
 		if (serverChannel != null) {
 			serverChannel.close();
 			serverChannel.parent().close();

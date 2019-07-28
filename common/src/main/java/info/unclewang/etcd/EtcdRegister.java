@@ -5,6 +5,7 @@ import io.etcd.jetcd.ByteSequence;
 import io.etcd.jetcd.Client;
 import io.etcd.jetcd.KV;
 import io.etcd.jetcd.Lease;
+import io.etcd.jetcd.kv.DeleteResponse;
 import io.etcd.jetcd.kv.GetResponse;
 import io.etcd.jetcd.kv.PutResponse;
 import io.etcd.jetcd.lease.LeaseKeepAliveResponse;
@@ -109,6 +110,19 @@ public class EtcdRegister implements Register {
 	}
 
 	@Override
+	public void remove(String serviceName, InetSocketAddress address) {
+		String key = MessageFormat.format("/{0}/{1}/{2}/{3}", SERVICE_BASE_PATH, serviceName, address.getHostName(), address.getPort());
+		ByteSequence byteKey = ByteSequence.from(key, Charset.defaultCharset());
+		try {
+			CompletableFuture<DeleteResponse> delete = this.kvClient.delete(byteKey);
+			DeleteResponse deleteResponse = delete.get();
+			log.warn("remove service {} success. remove value is {}. delete num:{}", serviceName, key, deleteResponse.getDeleted());
+		} catch (InterruptedException | ExecutionException e) {
+			log.error("kv put failed", e);
+		}
+	}
+
+	@Override
 	public List<InetSocketAddress> discover(String serviceName) {
 		String key = MessageFormat.format("/{0}/{1}", SERVICE_BASE_PATH, serviceName);
 		log.info("start to find service, Name :{}", key);
@@ -135,4 +149,6 @@ public class EtcdRegister implements Register {
 		}
 		return res;
 	}
+
+
 }

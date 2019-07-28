@@ -1,6 +1,5 @@
 package info.unclewang.etcd;
 
-import java.net.Inet4Address;
 import java.net.InetSocketAddress;
 import java.util.List;
 
@@ -12,17 +11,21 @@ public interface Register {
 	/**
 	 * @param serviceName
 	 * @param address
-	 * @throws Exception
-	 * 服务注册
+	 * @throws Exception 将服务注册到注册中心中
 	 */
 	void register(String serviceName, InetSocketAddress address);
 
 	/**
 	 * @param serviceName
-	 * @return
-	 * 服务发现
+	 * @return 从注册中心进行服务发现
 	 */
 	List<InetSocketAddress> discover(String serviceName);
+
+	/**
+	 * @param serviceName
+	 * @param address     从注册中心中剔除某个服务的地址
+	 */
+	void remove(String serviceName, InetSocketAddress address);
 
 	/**
 	 * 保活
