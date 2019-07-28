@@ -1,7 +1,7 @@
 package info.unclewang.config;
 
 import info.unclewang.annotation.RpcInterface;
-import info.unclewang.proxy.RpcProxy;
+import info.unclewang.proxy.RpcInvocationHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import org.springframework.beans.BeansException;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Configuration
 @Slf4j
-public class RpcConfig implements ApplicationContextAware, InitializingBean {
+public class RpcProxy implements ApplicationContextAware, InitializingBean {
 
 	private ApplicationContext applicationContext;
 
@@ -40,7 +40,7 @@ public class RpcConfig implements ApplicationContextAware, InitializingBean {
 		return (T) Proxy.newProxyInstance(
 				interfaceClass.getClassLoader(),
 				new Class<?>[]{interfaceClass},
-				new RpcProxy<>(interfaceClass)
+				new RpcInvocationHandler<>(interfaceClass)
 		);
 	}
 }

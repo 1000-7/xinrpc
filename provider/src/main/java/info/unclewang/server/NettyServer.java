@@ -60,8 +60,7 @@ public class NettyServer {
 		return serverBootstrap;
 	}
 
-	public Channel bind(final ServerBootstrap serverBootstrap) throws InterruptedException {
-		int port = nettyProperties.getTcpPort();
+	public Channel bind(final ServerBootstrap serverBootstrap, int port) throws InterruptedException {
 		return serverBootstrap.bind(port).addListener(future -> {
 			if (future.isSuccess()) {
 				System.out.println(new Date() + ": 端口[" + port + "]绑定成功!");

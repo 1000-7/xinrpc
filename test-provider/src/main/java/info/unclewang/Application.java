@@ -4,6 +4,7 @@ import info.unclewang.service.RpcService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+
 /**
  * @author unclewang
  * @date 2019-07-22 21:16
@@ -13,6 +14,7 @@ public class Application {
 	public static void main(String[] args) throws InterruptedException {
 		ConfigurableApplicationContext context = SpringApplication.run(Application.class);
 		RpcService service = context.getBean(RpcService.class);
-		service.start();
+		service.start("127.0.0.1", Integer.parseInt(System.getProperty("port")));
+
 	}
 }

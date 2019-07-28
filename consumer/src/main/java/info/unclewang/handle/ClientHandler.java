@@ -14,14 +14,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2019-07-22 20:37
  */
 public class ClientHandler extends ChannelDuplexHandler {
-	private final Map<String, DefaultFuture> futureMap = new ConcurrentHashMap<>();
+	private final Map<String, CacheFuture> futureCacheMap = new ConcurrentHashMap<>();
 
 
 	@Override
 	public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
 		if (msg instanceof RpcRequest) {
 			RpcRequest request = (RpcRequest) msg;
-			futureMap.putIfAbsent(request.getId(), new DefaultFuture());
+			futureCacheMap.putIfAbsent(request.getId(), new CacheFuture());
 		}
 		super.write(ctx, msg, promise);
 	}
@@ -30,26 +30,23 @@ public class ClientHandler extends ChannelDuplexHandler {
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof RpcResponse) {
 			RpcResponse response = (RpcResponse) msg;
-			DefaultFuture defaultFuture = futureMap.get(response.getRequestId());
-			defaultFuture.setResponse(response);
+			CacheFuture cacheFuture = futureCacheMap.get(response.getRequestId());
+			cacheFuture.setResponse(response);
 		}
 		super.channelRead(ctx, msg);
 	}
 
 	public RpcResponse getRpcResponse(String requestId) {
-
 		try {
-			DefaultFuture defaultFuture = futureMap.get(requestId);
-			return defaultFuture.getResponse(10);
+			CacheFuture cacheFuture = futureCacheMap.get(requestId);
+			return cacheFuture.getResponse(10);
 		} finally {
-			futureMap.remove(requestId);
+			futureCacheMap.remove(requestId);
 		}
-
-
 	}
 }
 
-class DefaultFuture {
+class CacheFuture {
 	private RpcResponse rpcResponse;
 	private volatile boolean isSucceed = false;
 	private final Object object = new Object();
