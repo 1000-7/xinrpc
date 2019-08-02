@@ -5,8 +5,6 @@ import info.unclewang.codec.RpcEncoder;
 import info.unclewang.entity.RpcRequest;
 import info.unclewang.entity.RpcResponse;
 import info.unclewang.handle.RpcHandler;
-import info.unclewang.serialization.impl.FastJsonSerialization;
-import info.unclewang.serialization.impl.Hessian2Serialization;
 import info.unclewang.util.NettyProperties;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -52,8 +50,8 @@ public class NettyServer {
 					@Override
 					protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
 						nioSocketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(65535, 0, 4));
-						nioSocketChannel.pipeline().addLast(new RpcEncoder(RpcResponse.class, new FastJsonSerialization()));
-						nioSocketChannel.pipeline().addLast(new RpcDecoder(RpcRequest.class, new FastJsonSerialization()));
+						nioSocketChannel.pipeline().addLast(new RpcEncoder(RpcResponse.class));
+						nioSocketChannel.pipeline().addLast(new RpcDecoder(RpcRequest.class));
 						nioSocketChannel.pipeline().addLast(rpcHandler);
 					}
 				});

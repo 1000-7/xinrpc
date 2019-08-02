@@ -1,5 +1,7 @@
 package info.unclewang.entity;
 
+import info.unclewang.annotation.RpcBean;
+import info.unclewang.util.SerializationType;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -7,6 +9,7 @@ import java.io.Serializable;
 /**
  * @author unclewang
  */
+@RpcBean(serializeType = SerializationType.PROTO_BUFFER)
 @Data
 public class RpcRequest implements Serializable {
 	private String id;

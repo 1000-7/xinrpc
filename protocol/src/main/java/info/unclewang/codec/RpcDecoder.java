@@ -1,9 +1,8 @@
 package info.unclewang.codec;
 
+import info.unclewang.annotation.RpcBean;
+import info.unclewang.serialization.SerializationFactory;
 import info.unclewang.serialization.XinSerializable;
-import info.unclewang.serialization.impl.FstSerialization;
-import info.unclewang.serialization.impl.KryoSerialization;
-import info.unclewang.serialization.impl.ProtoBufferSerialization;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -20,10 +19,12 @@ public class RpcDecoder extends ByteToMessageDecoder {
 	private Class<?> clz;
 	private XinSerializable xinSerializable;
 
-	public RpcDecoder(Class<?> clz, XinSerializable xinSerializable) {
+	public RpcDecoder(Class<?> clz) {
 		this.clz = clz;
-		this.xinSerializable = new ProtoBufferSerialization();
+		RpcBean annotation = clz.getAnnotation(RpcBean.class);
+		this.xinSerializable = SerializationFactory.getBySerializeType(annotation.serializeType());
 	}
+
 
 	/**
 	 * @param channelHandlerContext

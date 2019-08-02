@@ -50,8 +50,8 @@ public class NettyClient {
 					protected void initChannel(SocketChannel ch) throws Exception {
 						ChannelPipeline pipeline = ch.pipeline();
 						pipeline.addLast(new LengthFieldBasedFrameDecoder(65535, 0, 4));
-						pipeline.addLast(new RpcEncoder(RpcRequest.class, new FastJsonSerialization()));
-						pipeline.addLast(new RpcDecoder(RpcResponse.class, new FastJsonSerialization()));
+						pipeline.addLast(new RpcEncoder(RpcRequest.class));
+						pipeline.addLast(new RpcDecoder(RpcResponse.class));
 						pipeline.addLast(clientHandler);
 					}
 				});

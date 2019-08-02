@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>info.unclewang</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
         </dependency>
@@ -53,7 +58,6 @@
         <dependency>
             <groupId>io.protostuff</groupId>
             <artifactId>protostuff-core</artifactId>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
