@@ -77,6 +77,6 @@ public abstract class AbstractRpcHandler<T> {
 			}
 			this.discoverInetSocketAddress = this.register.discover(this.clz.getName());
 			log.info("updateDiscoverInetSocketAddress success, {}", new Date(System.currentTimeMillis()).toString());
-		}, 0, 5, TimeUnit.SECONDS);
+		}, 0, 60, TimeUnit.SECONDS);
 	}
 }

@@ -60,7 +60,8 @@ public class ConsumerServiceImpl implements ConsumerService, ApplicationContextA
 	}
 
 	public static void testXinRpc() {
-		IHelloService helloService = applicationContext.getBean(IHelloService.class);
+		IHelloService helloService = getBean(IHelloService.class);
+		System.out.println("aaasdada" + helloService.sayHi("asda"));
 		System.out.println(helloService.sayHi("world"));
 		System.out.println("helloService.map(\"aa\",\"bb\") = " + helloService.map("aa", "bb"));
 	}

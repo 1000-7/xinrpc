@@ -6,6 +6,7 @@ import info.unclewang.entity.RpcRequest;
 import info.unclewang.entity.RpcResponse;
 import info.unclewang.handle.RpcHandler;
 import info.unclewang.serialization.impl.FastJsonSerialization;
+import info.unclewang.serialization.impl.Hessian2Serialization;
 import info.unclewang.util.NettyProperties;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;

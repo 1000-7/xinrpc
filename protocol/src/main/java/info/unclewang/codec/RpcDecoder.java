@@ -1,9 +1,13 @@
 package info.unclewang.codec;
 
 import info.unclewang.serialization.XinSerializable;
+import info.unclewang.serialization.impl.FstSerialization;
+import info.unclewang.serialization.impl.KryoSerialization;
+import info.unclewang.serialization.impl.ProtoBufferSerialization;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -11,13 +15,14 @@ import java.util.List;
  * @author xavior.wx
  * @date 2019-07-22 17:52
  */
+@Slf4j
 public class RpcDecoder extends ByteToMessageDecoder {
 	private Class<?> clz;
 	private XinSerializable xinSerializable;
 
 	public RpcDecoder(Class<?> clz, XinSerializable xinSerializable) {
 		this.clz = clz;
-		this.xinSerializable = xinSerializable;
+		this.xinSerializable = new ProtoBufferSerialization();
 	}
 
 	/**
