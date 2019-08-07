@@ -19,6 +19,6 @@ public class RpcInvocationHandler<T> extends AbstractRpcHandler<T> implements In
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		return this.handleRequestAndSend(method, args);
+		return this.invokeSwitch(method, args);
 	}
 }

@@ -24,4 +24,6 @@ public class NettyProperties {
 	private int backlog = 1024;
 
 	private boolean tcpNodeLay = true;
+
+	public static boolean sync = false;
 }

@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * @author unclewang
  */
-@RpcBean(serializeType = SerializationType.PROTO_STUFF)
+@RpcBean(serializeType = SerializationType.JSON)
 @Data
 public class RpcResponse implements Serializable {
 	private String requestId;

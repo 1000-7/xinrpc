@@ -4,7 +4,9 @@ import info.unclewang.codec.RpcDecoder;
 import info.unclewang.codec.RpcEncoder;
 import info.unclewang.entity.RpcRequest;
 import info.unclewang.entity.RpcResponse;
+import info.unclewang.handle.ClientFutureHandle;
 import info.unclewang.handle.ClientHandler;
+import info.unclewang.util.NettyProperties;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -24,6 +26,8 @@ public class NettyClient {
 	private EventLoopGroup eventLoopGroup;
 	private Channel channel;
 	private ClientHandler clientHandler;
+	private ClientFutureHandle clientFutureHandle;
+	private ChannelFuture channelFuture;
 
 	private String host;
 	private int port;
@@ -34,12 +38,13 @@ public class NettyClient {
 	}
 
 
-	public void connect(final InetSocketAddress inetSocketAddress) {
+	public ChannelFuture connect(final InetSocketAddress inetSocketAddress) {
 		clientHandler = new ClientHandler();
+		clientFutureHandle = new ClientFutureHandle();
 		eventLoopGroup = new NioEventLoopGroup();
 		Bootstrap bootstrap = new Bootstrap();
 
-		bootstrap.group(eventLoopGroup)
+		channelFuture = bootstrap.group(eventLoopGroup)
 				.channel(NioSocketChannel.class)
 				.option(ChannelOption.SO_KEEPALIVE, true)
 				.option(ChannelOption.TCP_NODELAY, true)
@@ -50,16 +55,26 @@ public class NettyClient {
 						pipeline.addLast(new LengthFieldBasedFrameDecoder(65535, 0, 4));
 						pipeline.addLast(new RpcEncoder(RpcRequest.class));
 						pipeline.addLast(new RpcDecoder(RpcResponse.class));
-						pipeline.addLast(clientHandler);
+						if (NettyProperties.sync) {
+							pipeline.addLast(clientHandler);
+						} else {
+							pipeline.addLast(clientFutureHandle);
+						}
 					}
-				});
+				}).connect(inetSocketAddress);
 
 		try {
-			channel = bootstrap.connect(inetSocketAddress).sync().channel();
+			if (NettyProperties.sync) {
+				channel = channelFuture.sync().channel();
+			} else {
+				channelFuture.addListener((ChannelFutureListener) this::operationComplete);
+			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			log.error("channel error", e);
 		}
+		return channelFuture;
 	}
+
 
 	public InetSocketAddress getInetSocketAddress() {
 		return new InetSocketAddress(host, port);
@@ -79,4 +94,15 @@ public class NettyClient {
 		return clientHandler.getRpcResponse(request.getId());
 	}
 
+	private void operationComplete(ChannelFuture future) {
+		if (future.isSuccess()) {
+			channel = future.channel();
+			log.info("start a client to " + host + ":" + port);
+			channel.closeFuture().addListener((ChannelFutureListener) closeFuture -> {
+				log.info("stop the client to " + host + ":" + port);
+			});
+		} else {
+			log.error("start a Client failed", future.cause());
+		}
+	}
 }

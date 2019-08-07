@@ -22,6 +22,6 @@ public class RpcMethodInterceptor<T> extends AbstractRpcHandler<T> implements Me
 
 	@Override
 	public Object intercept(Object o, Method method, Object[] parameters, MethodProxy methodProxy) throws Throwable {
-		return this.handleRequestAndSend(method, parameters);
+		return this.invokeSwitch(method, parameters);
 	}
 }
