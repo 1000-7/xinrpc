@@ -29,7 +29,7 @@ public class RpcProxy implements ApplicationContextAware, InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		Reflections reflections = new Reflections("info.unclewang");
+		Reflections reflections = new Reflections("info.unclewang.api");
 		DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
 		Set<Class<?>> rpcConsumerAnnotations = reflections.getTypesAnnotatedWith(RpcConsumer.class);
 		for (Class<?> oneClass : rpcConsumerAnnotations) {

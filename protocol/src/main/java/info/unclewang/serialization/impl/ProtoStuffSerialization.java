@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2019-08-02 11:03
  */
 @Slf4j
-public class ProtoBufferSerialization implements XinSerializable {
+public class ProtoStuffSerialization implements XinSerializable {
 	@Override
 	public <T> byte[] serialize(T obj) {
 		log.info("obj:{}", obj);

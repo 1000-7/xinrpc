@@ -20,11 +20,11 @@ public class SerializationFactory {
 				return new Hessian2Serialization();
 			case KRYO:
 				return new KryoSerialization();
-			case PROTO_BUFFER:
-				return new ProtoBufferSerialization();
+			case PROTO_STUFF:
+				return new ProtoStuffSerialization();
 			default:
 				log.debug("serializeType exists error, {}", serializeType);
-				return new ProtoBufferSerialization();
+				return new ProtoStuffSerialization();
 		}
 
 	}

@@ -1,7 +1,7 @@
 package info.unclewang.service;
 
 import info.unclewang.api.IHelloService;
-import info.unclewang.call.ConsumerService;
+import info.unclewang.api.ConsumerService;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

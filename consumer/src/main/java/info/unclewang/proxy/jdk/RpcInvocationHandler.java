@@ -1,15 +1,10 @@
 package info.unclewang.proxy.jdk;
 
-import info.unclewang.etcd.EtcdRegister;
 import info.unclewang.proxy.AbstractRpcHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author unclewang

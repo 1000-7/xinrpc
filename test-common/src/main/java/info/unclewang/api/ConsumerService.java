@@ -1,4 +1,4 @@
-package info.unclewang.call;
+package info.unclewang.api;
 
 import info.unclewang.annotation.RpcConsumer;
 /**

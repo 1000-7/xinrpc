@@ -14,7 +14,7 @@ public enum SerializationType {
 	JSON("json"),
 	FST("fst"),
 	HESSIAN2("hessian2"),
-	PROTO_BUFFER("protoBuffer"),
+	PROTO_STUFF("protoStuff"),
 	KRYO("kryo");
 
 	private String value;

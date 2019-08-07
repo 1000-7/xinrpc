@@ -50,10 +50,11 @@ public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> implemen
 
 		//cglib处理request
 		Class<?> clz = Class.forName(request.getClassName());
+		log.info("clz:{}", clz);
 		Object serviceBean = applicationContext.getBean(clz);
 		Class<?> serviceClass = serviceBean.getClass();
+		log.info("serviceClass:{}", serviceClass);
 		FastClass fastClass = FastClass.create(serviceClass);
-
 		FastMethod fastMethod = fastClass.getMethod(methodName, parameterTypes);
 		return fastMethod.invoke(serviceBean, parameters);
 	}

@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * @author unclewang
  */
-@RpcBean(serializeType = SerializationType.PROTO_BUFFER)
+@RpcBean(serializeType = SerializationType.PROTO_STUFF)
 @Data
 public class RpcRequest implements Serializable {
 	private String id;
