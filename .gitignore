@@ -1,2 +1,22 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/workspace.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/sbt.xml
+common/target/
+consumer/src/main/resources/
+consumer/target/
+protocol/src/main/resources/
+protocol/src/test/
+protocol/target/
+provider/src/main/resources/
+provider/src/test/
+provider/target/
+test-common/src/main/resources/
+test-common/src/test/
+test-common/target/
+test-consumer/src/main/resources/
+test-consumer/src/test/
+test-consumer/target/
+test-provider/src/main/java/info/unclewang/controller/
+test-provider/src/test/
+test-provider/target/
