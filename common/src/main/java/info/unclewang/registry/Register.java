@@ -1,4 +1,4 @@
-package info.unclewang.etcd;
+package info.unclewang.registry;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -8,6 +8,8 @@ import java.util.List;
  * @date 2019-07-26 10:11
  */
 public interface Register {
+
+	void init();
 	/**
 	 * @param serviceName
 	 * @param address

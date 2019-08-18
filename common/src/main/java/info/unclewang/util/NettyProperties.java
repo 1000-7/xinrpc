@@ -13,12 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "netty")
 public class NettyProperties {
 
-	private int tcpPort = 8000;
-
-	private int bossCount = 4;
-
-	private int workerCount = 16;
-
 	private boolean keepAlive = true;
 
 	private int backlog = 1024;
@@ -26,4 +20,6 @@ public class NettyProperties {
 	private boolean tcpNodeLay = true;
 
 	public static boolean sync = false;
+
+	public static boolean useEtcd = false;
 }

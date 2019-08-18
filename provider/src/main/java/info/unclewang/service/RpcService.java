@@ -1,8 +1,11 @@
 package info.unclewang.service;
 
 import info.unclewang.annotation.RpcProvider;
-import info.unclewang.etcd.EtcdRegister;
+import info.unclewang.registry.Register;
+import info.unclewang.registry.impl.EtcdRegister;
+import info.unclewang.registry.impl.ZookeeperRegister;
 import info.unclewang.server.NettyServer;
+import info.unclewang.util.NettyProperties;
 import info.unclewang.util.RpcUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -31,6 +34,9 @@ public class RpcService {
 	private ServerBootstrap serverBootstrap;
 	@Autowired
 	private EtcdRegister etcdRegister;
+	@Autowired
+	private ZookeeperRegister zookeeperRegister;
+
 
 	private static Channel serverChannel = null;
 	private InetSocketAddress inetSocketAddress;
@@ -38,7 +44,13 @@ public class RpcService {
 
 	public void start(String ipAddress, int port) throws InterruptedException {
 		serverChannel = nettyServer.bind(serverBootstrap, port);
-		etcdRegister.initEtcd();
+		Register register;
+		if (NettyProperties.useEtcd) {
+			register = etcdRegister;
+		} else {
+			register = zookeeperRegister;
+		}
+		register.init();
 		Reflections reflections = new Reflections("info.unclewang");
 		Set<Class<?>> classes = reflections.getTypesAnnotatedWith(RpcProvider.class);
 		classes.forEach(clazz -> {
@@ -50,8 +62,8 @@ public class RpcService {
 				try {
 					log.info("register begin. service name :{}, address:{}:{}", serviceName, ipAddress, port);
 					this.inetSocketAddress = new InetSocketAddress(RpcUtils.parseAddress(ipAddress), port);
-					etcdRegister.register(clazzName, this.inetSocketAddress);
-
+					register.register(clazzName, this.inetSocketAddress);
+					log.info("register end. service name :{}, address:{}:{}", serviceName, ipAddress, port);
 				} catch (UnknownHostException e) {
 					log.error("UnknownHostException", e);
 				}

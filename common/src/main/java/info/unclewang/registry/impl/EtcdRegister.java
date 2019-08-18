@@ -1,5 +1,6 @@
-package info.unclewang.etcd;
+package info.unclewang.registry.impl;
 
+import info.unclewang.registry.Register;
 import info.unclewang.util.RpcUtils;
 import io.etcd.jetcd.ByteSequence;
 import io.etcd.jetcd.Client;
@@ -27,6 +28,9 @@ import java.util.concurrent.*;
 /**
  * @author unclewang
  * @date 2019-07-26 10:13
+ * <p>
+ * $ export ETCDCTL_API=3
+ * $ etcdctl get / –prefix –keys-only
  */
 @Slf4j
 @Service
@@ -41,7 +45,8 @@ public class EtcdRegister implements Register {
 	private long leaseId;
 
 
-	public void initEtcd() {
+	@Override
+	public void init() {
 		initEtcd(ETCD_ADDRESS);
 	}
 

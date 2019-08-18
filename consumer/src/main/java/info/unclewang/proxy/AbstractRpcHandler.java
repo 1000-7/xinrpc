@@ -3,9 +3,11 @@ package info.unclewang.proxy;
 import info.unclewang.client.NettyClient;
 import info.unclewang.entity.RpcRequest;
 import info.unclewang.entity.RpcResponse;
-import info.unclewang.etcd.EtcdRegister;
 import info.unclewang.future.FutureHolder;
 import info.unclewang.future.XinRpcFuture;
+import info.unclewang.registry.Register;
+import info.unclewang.registry.impl.EtcdRegister;
+import info.unclewang.registry.impl.ZookeeperRegister;
 import info.unclewang.util.NettyProperties;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -27,7 +29,7 @@ import java.util.concurrent.*;
 public abstract class AbstractRpcHandler<T> {
 	protected Class<T> clz;
 	protected List<InetSocketAddress> discoverInetSocketAddress = null;
-	protected EtcdRegister register;
+	protected Register register;
 
 	protected Object invokeSwitch(Method method, Object[] args) {
 		if (NettyProperties.sync) {
@@ -109,13 +111,21 @@ public abstract class AbstractRpcHandler<T> {
 		});
 
 		scheduledExecutorService.scheduleAtFixedRate(() -> {
-			if (this.register == null) {
-				this.register = new EtcdRegister();
-				this.register.initEtcd();
-			}
-			this.discoverInetSocketAddress = this.register.discover(this.clz.getName());
+			this.getRegister();
 			log.info("updateDiscoverInetSocketAddress success, {}", new Date(System.currentTimeMillis()).toString());
 		}, 0, 60, TimeUnit.SECONDS);
+	}
+
+	private void getRegister() {
+		if (this.register == null) {
+			if (NettyProperties.useEtcd) {
+				this.register = new EtcdRegister();
+			} else {
+				this.register = new ZookeeperRegister();
+			}
+			this.register.init();
+		}
+		this.discoverInetSocketAddress = this.register.discover(this.clz.getName());
 	}
 
 	private RpcRequest getRequest(Method method, Object[] args) {
@@ -138,11 +148,7 @@ public abstract class AbstractRpcHandler<T> {
 
 	private InetSocketAddress getInetSocketAddress() {
 		if (this.discoverInetSocketAddress == null) {
-			if (this.register == null) {
-				this.register = new EtcdRegister();
-				this.register.initEtcd();
-			}
-			this.discoverInetSocketAddress = this.register.discover(this.clz.getName());
+			this.getRegister();
 			if (this.discoverInetSocketAddress.size() == 0) {
 				log.error("No available service. Service name:{}", this.clz.getName());
 				System.exit(0);
