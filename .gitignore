@@ -20,3 +20,4 @@ test-consumer/target/
 test-provider/src/main/java/info/unclewang/controller/
 test-provider/src/test/
 test-provider/target/
+.idea/*
